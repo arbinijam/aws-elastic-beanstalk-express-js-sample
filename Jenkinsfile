@@ -1,11 +1,20 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'  // Use Node 16 Docker image as the build agent
+            image 'node:16'
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
+        stage('Check Environment') {
+            steps {
+                echo 'Checking environment...'
+                sh 'env'
+                sh 'pwd'
+                sh 'ls -al /var/jenkins_home/workspace'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 echo 'Checking out the code...'
