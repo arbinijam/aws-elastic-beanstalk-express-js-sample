@@ -14,21 +14,29 @@ pipeline {
                 sh 'ls -al /var/jenkins_home/workspace'
             }
         }
-
+        stage('Check npm Version') {
+            steps {
+                sh 'npm --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 echo 'Checking out the code...'
                 git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'
             }
         }
-
-        stage('Install Dependencies') {
+        stage('Check for package.json') {
             steps {
-                echo 'Installing dependencies with npm install --save...'
-                sh 'npm install --save'
+                echo 'Checking for package.json...'
+                sh 'ls -al package.json'
             }
         }
-
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies...'
+                sh 'npm install'
+            }
+        }
         stage('Security Scan') {
             steps {
                 echo 'Running Snyk security scan...'
@@ -36,28 +44,24 @@ pipeline {
                 sh 'snyk test --severity-threshold=high'
             }
         }
-
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
                 sh 'npm test'
             }
         }
-
         stage('Build') {
             steps {
                 echo 'Building the application...'
                 sh 'npm run build'
             }
         }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
             }
         }
     }
-
     post {
         always {
             echo 'Pipeline completed.'
