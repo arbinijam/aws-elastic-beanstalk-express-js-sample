@@ -1,21 +1,21 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'  // Requirement 1: Use Node 16 Docker image as the build agent
-	    // args '-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true'
+            image 'node:16'  // Use Node 16 Docker image as the build agent
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out the code...'
-                git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'
+                git url: 'https://github.com/your-username/aws-elastic-beanstalk-express-js-sample', branch: 'main'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies with npm install --save...'  // Requirement 2: Install dependencies with --save flag
+                echo 'Installing dependencies with npm install --save...'
                 sh 'npm install --save'
             }
         }
@@ -23,9 +23,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo 'Running Snyk security scan...'
-                // Install Snyk globally
                 sh 'npm install -g snyk'
-                // Run Snyk scan, halt on critical vulnerabilities
                 sh 'snyk test --severity-threshold=high'
             }
         }
