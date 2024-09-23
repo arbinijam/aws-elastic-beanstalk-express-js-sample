@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:16'  // Requirement 1: Use Node 16 Docker image as the build agent
-	    args '-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true'
+	    // args '-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true'
         }
     }
     stages {
