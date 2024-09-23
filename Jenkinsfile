@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out the code...'
-                git url: 'https://github.com/your-username/aws-elastic-beanstalk-express-js-sample', branch: 'main'
+                git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'
             }
         }
 
