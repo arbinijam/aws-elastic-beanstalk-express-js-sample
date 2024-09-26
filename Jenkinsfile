@@ -6,16 +6,19 @@ pipeline {
         }
     }
     stages {
-        stage('Check Environment') {
+        stage('Check Environment and Diagnostics') {
             steps {
                 echo 'Checking environment...'
                 sh 'env'
                 sh 'pwd'
                 sh 'ls -al /var/jenkins_home/workspace'
+                sh 'whoami'
             }
         }
-        stage('Check npm Version') {
+        stage('Check Node.js and npm') {
             steps {
+                echo 'Checking Node.js and npm...'
+                sh 'node --version'
                 sh 'npm --version'
             }
         }
@@ -74,4 +77,3 @@ pipeline {
         }
     }
 }
-
