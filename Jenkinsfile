@@ -2,7 +2,6 @@ pipeline {
     agent {
         docker {
             image 'node:16'  // Use Node.js 16 Docker image as the build agent
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
