@@ -1,48 +1,44 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'
+            image 'node:16'  # Use Node.js 16 Docker image as the build agent
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
-        stage('Install Docker') {
-            steps {
-                sh '''
-                apt-get update && \
-                apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common && \
-                curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-                add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
-                apt-get update && \
-                apt-get install -y docker-ce-cli
-                '''
-            }
-        }
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'
+                git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'  # Checkout code
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --save'
+                sh 'npm install --save'  # Install Node.js dependencies
             }
         }
         stage('Security Scan') {
             steps {
-                sh 'npm install -g snyk'
-                sh 'snyk test --severity-threshold=high'
+                sh 'npm install -g snyk'  # Install Snyk for security scanning
+                sh 'snyk test --severity-threshold=high'  # Run security scan with Snyk
             }
         }
         stage('Build') {
             steps {
-                sh 'npm run build'
+                sh 'npm run build'  # Build the application
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deployment step'
+                echo 'Deploying application...'  # Placeholder for deployment
             }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
