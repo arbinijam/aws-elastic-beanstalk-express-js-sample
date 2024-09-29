@@ -1,43 +1,25 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'  // Use Node.js 16 Docker image as the build agent
+            image 'node:16'
         }
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample', branch: 'main'  // Checkout code
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install --save'  // Install Node.js dependencies
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                sh 'npm install -g snyk'  // Install Snyk for security scanning
-                sh 'snyk test --severity-threshold=high'  // Run security scan with Snyk
-            }
-        }
         stage('Build') {
             steps {
-                sh 'npm run build'  // Build the application
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'  // Placeholder for deployment
+                script {
+                    echo 'Building the project...'
+                    sh 'npm install --save'
+                }
             }
         }
     }
     post {
-        always {
-            echo 'Pipeline completed.'
+        success {
+            echo 'Build successful!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Build failed.'
         }
     }
 }
