@@ -5,6 +5,14 @@ pipeline {
         }
     }
     stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    // Clone your repository manually if needed
+                    sh 'git clone https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample.git .'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 script {
