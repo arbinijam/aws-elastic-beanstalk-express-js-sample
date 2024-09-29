@@ -7,10 +7,8 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                script {
-                    // Clone your repository manually if needed
-                    sh 'git clone https://github.com/arbinijam/aws-elastic-beanstalk-express-js-sample.git .'
-                }
+                // Use checkout scm if you have already configured the repository in Jenkins job
+                checkout scm
             }
         }
         stage('Build') {
